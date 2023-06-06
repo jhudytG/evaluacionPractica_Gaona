@@ -4,8 +4,8 @@
  */
 package com.tap.m5b.proyectousuario.controller;
 
-import com.tap.m5b.proyectousuario.model.Usuario;
-import com.tap.m5b.proyectousuario.service.UsuarioServiceImpl;
+import com.tap.m5b.proyectousuario.model.Persona;
+import com.tap.m5b.proyectousuario.service.PersonaServicelmpl;
 import io.swagger.v3.oas.annotations.Operation;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,33 +24,33 @@ import org.springframework.web.bind.annotation.RestController;
  * @author jhudy
  */
 @RestController
-@RequestMapping("/usuario")
-public class UsuarioController {
-
+@RequestMapping("/personas")
+public class PersonaController {
     @Autowired
-    UsuarioServiceImpl usuarioService;
+    PersonaServicelmpl personaService;
 
-    @Operation(summary = "Se obtiene la lista de Usuarios")
+    @Operation(summary = "Se obtiene la lista de Personas")
     @GetMapping("/listar")
-    public ResponseEntity<List<Usuario>> listaUsuarios() {
-        return new ResponseEntity<>(usuarioService.findByAll(), HttpStatus.OK);
+    public ResponseEntity<List<Persona>> listaPersona() {
+        return new ResponseEntity<>(personaService.findByAll(), HttpStatus.OK);
     }
 
-    @Operation(summary = "Debe enviar los campos del Usuario")
+    @Operation(summary = "Debe enviar los campos de Persona")
     @PostMapping("/crear")
-    public ResponseEntity<Usuario> crearUsuario(@RequestBody Usuario u) {
-        return new ResponseEntity<>(usuarioService.save(u), HttpStatus.CREATED);
+    public ResponseEntity<Persona> crearPersona(@RequestBody Persona p) {
+        return new ResponseEntity<>(personaService.save(p), HttpStatus.CREATED);
     }
 
     @PutMapping("/actualizar/{id}")
-    public ResponseEntity<Usuario> actualizarUsuario(@PathVariable Integer id, @RequestBody Usuario u) {
-        Usuario usuario = usuarioService.findById(id);
-        if (usuario != null) {
+    public ResponseEntity<Persona> actualizarPersona(@PathVariable Integer id, @RequestBody Persona p) {
+        Persona persona = personaService.findById(id);
+        if (persona != null) {
             try {
-                usuario.setEstado(u.getEstado());
-                usuario.setPersona(u.getPersona());//se le asigna al usuario la persona
-                usuario.setRol(u.getRol());
-                return new ResponseEntity<>(usuarioService.save(usuario), HttpStatus.CREATED);
+                persona.setNombre(p.getNombre());
+                persona.setApellido(p.getApellido());
+                persona.setCedula(p.getCedula());
+                
+                return new ResponseEntity<>(personaService.save(persona), HttpStatus.CREATED);
             } catch (Exception e) {
                 return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
@@ -60,9 +60,8 @@ public class UsuarioController {
         }
     }
 
-    public ResponseEntity<Usuario> elimiarUsuario(@PathVariable Integer id) {
-        usuarioService.delete(id);
+    public ResponseEntity<Persona> elimiarPersona(@PathVariable Integer id) {
+        personaService.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
 }

@@ -13,37 +13,35 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import java.util.List;
 import lombok.Data;
-
-
 
 /**
  *
  * @author jhudy
  */
-
 @Data
 @Entity
-public class Usuario {
-    
+public class Compra {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_usuario")
-    private int id_usuario;
-  
-    @Column(name = "estado")
-    private String estado;
-    
+    @Column(name = "id_compra")
+    private int id_compra;
+
+    @NotNull(message = "El pvp no puede estar vacío")
+    @Min(value = 1, message = "El valor debe ser mayor o igual a 1")
+    @Column(name = "pvp_producto")
+    private double pvp_productos;
+
     @ManyToOne
-    @JoinColumn(name = "id_persona", referencedColumnName = "id_persona")// referencia a la columna, el name solo es como queremos que se llame la columna
-    private Persona persona;
-    
-    @ManyToOne
-    @JoinColumn(name="id_rol",referencedColumnName = "id_rol")
-    private Rol rol;
-    
+    @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario")
+    private Usuario user;
+
     @JsonIgnore
-    @OneToMany(mappedBy = "user")
-    private List<Compra> listaCompra;
+    @OneToMany(mappedBy = "compra")
+    private List<Producto> listProducto;
+
 }

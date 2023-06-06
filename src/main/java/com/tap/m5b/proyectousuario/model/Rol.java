@@ -10,13 +10,11 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import java.util.List;
 import lombok.Data;
-
-
 
 /**
  *
@@ -25,25 +23,19 @@ import lombok.Data;
 
 @Data
 @Entity
-public class Usuario {
-    
+public class Rol {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_usuario")
-    private int id_usuario;
-  
-    @Column(name = "estado")
-    private String estado;
+    @Column(name = "id_rol")
+    private int id_rol;
     
-    @ManyToOne
-    @JoinColumn(name = "id_persona", referencedColumnName = "id_persona")// referencia a la columna, el name solo es como queremos que se llame la columna
-    private Persona persona;
-    
-    @ManyToOne
-    @JoinColumn(name="id_rol",referencedColumnName = "id_rol")
-    private Rol rol;
+    @Size(min = 3, max = 10, message = "El rol debe tener entre 3 y 10 caracteres")
+    @NotBlank(message = "El rol no puede estar en blanco")
+    @Column(name = "tipo")
+    private String tipo;
     
     @JsonIgnore
-    @OneToMany(mappedBy = "user")
-    private List<Compra> listaCompra;
+    @OneToMany(mappedBy = "rol")
+    private List<Usuario> listUsuarios;
+
 }
