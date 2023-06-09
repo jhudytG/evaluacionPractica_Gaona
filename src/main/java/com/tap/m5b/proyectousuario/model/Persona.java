@@ -16,6 +16,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import java.util.List;
 import lombok.Data;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**
  *
@@ -61,8 +62,6 @@ public class Persona {
     @Size(max = 8, min = 5, message = "La contraseña debe estar entre 8 y 5 caracteres")
     @Column(name = "password")
     private String contrasenia;
-//    BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-//    String hashedPassword = passwordEncoder.encode(contrasenia);
 
     @JsonIgnore
     @OneToMany(mappedBy = "persona")

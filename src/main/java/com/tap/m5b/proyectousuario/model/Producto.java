@@ -4,16 +4,18 @@
  */
 package com.tap.m5b.proyectousuario.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.validation.constraints.Min;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import java.util.List;
 import lombok.Data;
 
 /**
@@ -25,9 +27,9 @@ import lombok.Data;
 public class Producto {
 
     @Id
-     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_producto")
-    private int id_producto;
+    private int idproducto;
 
     @NotBlank(message = "La descripción no puede estar vacía")
     @Column(name = "descripcion")
@@ -39,14 +41,23 @@ public class Producto {
 
     @Column(name = "precio_emprendedor")
     @NotNull(message = "El precio emprendedor no puede estar vacío")
-    @Min(value = 1, message = "El valor debe ser mayor o igual a 1")
-    private double precio_emprendedor;
+    @DecimalMin(value = "1.0", message = "El valor debe ser mayor o igual a 1")
+    private double precioEmprendedor;
 
     @NotBlank(message = "La dirección de imagen no puede estar vacía")
     @Column(name = "imagen")
     private String imagen;
 
-    @ManyToOne
-    @JoinColumn(name="id_compra",referencedColumnName = "id_compra")
-    private Compra compra;
+    //Relaciones
+    @JsonIgnore
+    @OneToMany(mappedBy = "producto")
+    private List<Compra> compras;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "producto")
+    private List<Venta> ventas;
+    
+    @JsonIgnore
+    @OneToOne(mappedBy = "producto")
+    private Inventario inventario;
 }

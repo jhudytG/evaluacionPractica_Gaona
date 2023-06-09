@@ -11,11 +11,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
-import java.util.List;
 import lombok.Data;
 
 /**
@@ -24,24 +22,20 @@ import lombok.Data;
  */
 @Data
 @Entity
-public class Compra {
-
+public class Inventario {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_compra")
-    private int idcompra;
-
-    @NotNull(message = "El pvp no puede estar vacío")
+    @Column(name = "id_inventario")
+    private int idinventario;
+    
+    @Column(name = "cantidad_inv")
+    @NotNull(message = "La cantidad no puede estar vacía")
     @Min(value = 1, message = "El valor debe ser mayor o igual a 1")
-    @Column(name = "pvp_producto")
-    private double pvpProductos;
-
-    @ManyToOne
-    @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario")
-    private Usuario user;
-
-    @ManyToOne
-    @JoinColumn(name = "id_producto",referencedColumnName = "id_producto")
+    private int cantidadInv;
+    
+    @OneToOne
+    @JoinColumn(name = "id_producto", referencedColumnName = "id_producto")
     private Producto producto;
     
 }
