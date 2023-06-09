@@ -14,6 +14,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ProductoRepository extends JpaRepository<Producto, Integer> {
 
-    @Query(value = "Select * from venta v where v.fecha_venta = :fecha_venta", nativeQuery = true)
-    public Venta buscarVenta(String fecha);
+  
 }
